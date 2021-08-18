@@ -54,9 +54,10 @@ class BillController extends Controller {
       const decode = await app.jwt.verify(token, app.config.jwt.secret);
       if (!decode) return;
       user_id = decode.id;
+
       // 拿到当前用户的账单列表
       const list = await ctx.service.bill.list(user_id);
-      console.log(list);
+      console.log(list, 'vs', user_id);
       // 过滤出月份和类型所对应的账单列表
       const _list = list.filter(item => {
         // 特定消费类型
@@ -262,8 +263,7 @@ class BillController extends Controller {
     }
     const decode = await app.jwt.verify(token, app.config.jwt.secret);
     try {
-      const result = await ctx.service.bill.list({ user_id: decode.user_id }) || [];
-
+      const result = await ctx.service.bill.list(decode.id) || [];
       const start = moment(date).startOf('month').unix() * 1000;
       const end = moment(date).endOf('month').unix() * 1000;
       const _data = result.filter(item => Number(item.date) > start && Number(item.date) < end);
@@ -295,7 +295,7 @@ class BillController extends Controller {
         return arr;
       }, 0);
       ctx.body = {
-        status: 200,
+        code: 200,
         msg: '请求成功',
         data: {
           total_expense: Number(total_expense).toFixed(2),

@@ -15,7 +15,7 @@ function NavBar({showNav}){
     }
     const data = [
         {path: '/', title: '账单',  icon: <TabIcon type="zhangdan" />},
-        {path: '/bill', title: '统计', icon: <TabIcon type="tongji" />},
+        {path: '/statistics', title: '统计', icon: <TabIcon type="tongji" />},
         {path: '/user', title: '我的', icon: <TabIcon type="wode" />}
     ]
     return (

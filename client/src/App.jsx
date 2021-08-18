@@ -16,9 +16,10 @@ function App() {
 
   const { pathname } = location // 获取当前路径
 
-  const needNav = ['/', '/bill', '/user'] 
+  const needNav = ['/', '/statistics', '/user'] 
   const [showNav, setShowNav] = useState(false)
   useState(() => {
+    console.log('      needNav.includes(pathname)    ',      needNav.includes(pathname)    )
     setShowNav(
       needNav.includes(pathname)
     )
