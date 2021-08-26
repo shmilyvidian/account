@@ -29,6 +29,7 @@ class UserController extends Controller {
     const result = await ctx.service.user.register({
       username,
       password,
+      ctime: Date.now(),
       signature: '世界和平。',
       avatar: defaultAvatar,
     });
@@ -77,8 +78,8 @@ class UserController extends Controller {
     }, app.config.jwt.secret);
 
     ctx.body = {
+      msg: 'success login',
       code: 200,
-      message: 'success login',
       data: {
         token,
       },

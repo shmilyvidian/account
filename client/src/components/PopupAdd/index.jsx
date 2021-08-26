@@ -9,7 +9,7 @@ import CustomIcon from "../CustomIcon";
 
 
 const PopupAdd = forwardRef(({ detail = {}, reload }, ref) => {
-    const id = detail && detail.id // 外部传进来的账单详情 id
+    const id = (detail && detail.id) || '' // 外部传进来的账单详情 id
     const [show, setShow] = useState(false)
     const [amount, setAmount] = useState('')
     const [payType, changeType] = useState('expense')

@@ -1,27 +1,69 @@
 import dayjs from 'dayjs'
-import React, { useRef, useState, useEffect, Progress } from 'react'
-import { Icon } from 'zarm'
+import React, { useRef, useState, useEffect } from 'react'
+import { Icon, Progress } from 'zarm'
 import { get, typeMap } from '@/utils'
 import s from './index.module.less'
 import PopupDate from '@/components/PopupDate'
 import CustomIcon from '@/components/CustomIcon'
 import cx from 'classnames'
+let proportionChart = null; // 用于存放 echart 初始化返回的实例
 
-function Statistics() {
+const Statistics = () => {
   const [currentMonth, setCurrentMonth] = useState(dayjs().format('YYYY-MM')); // 当前月份
   const [totalType, changeTotalType] = useState('expense')
   const [expenseData, setExpenseData] = useState([])
   const [incomeData, setIncomeData] = useState([])
   const [pieType, changePieType] = useState('expense')
-  const [totalExpense, setTotalExpense] = useState(0); // 总支出
-  const [totalIncome, setTotalIncome] = useState(0); // 总收入
+  const [totalExpense, setTotalExpense] = useState(0) // 总支出
+  const [totalIncome, setTotalIncome] = useState(0) // 总收入
   const dateRef = useRef()
+  useEffect(() => {
+    setPieChart(pieType == 'expense' ? expenseData : incomeData);
+
+  }, [pieType])
   const select = item => {
     setCurrentMonth(item)
   }
   const toggle = () => {
     dateRef.current && dateRef.current.show()
   }
+  // 绘制饼图方法
+  const setPieChart = (data) => {
+    if (window.echarts) {
+      // 初始化饼图，返回实例。
+      proportionChart = echarts.init(document.getElementById('proportion'));
+      proportionChart.setOption({
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+          },
+          // 图例
+          legend: {
+              data: data.map(item => item.type_name)
+          },
+          series: [
+            {
+              name: '支出',
+              type: 'pie',
+              radius: '55%',
+              data: data.map(item => {
+                return {
+                  value: item.number,
+                  name: item.type_name
+                }
+              }),
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+              }
+            }
+          ]
+      })
+    };
+  };
   useEffect(async () => {
     const { data } = await get(`/api/bill/data?date=${currentMonth}`)
     // 过滤支出和收入
@@ -31,8 +73,8 @@ function Statistics() {
     const income_data = data.total_data.filter(item => item.pay_type == 2).sort((a, b) => b.number - a.number); // 过滤出账单类型为收入的项
     setExpenseData(expense_data);
     setIncomeData(income_data);
-  },
-    [currentMonth])
+    setPieChart(pieType == 'expense' ? expense_data : income_data);
+  },[currentMonth])
   return (
     <div className={s.statistics}>
       <div className={s.total}>
@@ -53,8 +95,9 @@ function Statistics() {
           </div>
         </div>
         <div className={s.content}>
+          {Array.isArray(expenseData)}
           {
-            (totalType == 'expense' ? expenseData : incomeData).map(item => <div key={item.type_id} className={s.item}>
+            ((totalType == 'expense' ? expenseData : incomeData) || []).map(item => <div key={item.type_id} className={s.item}>
               <div className={s.left}>
                 <div className={s.type}>
                   <span className={cx({ [s.expense]: totalType == 'expense', [s.income]: totalType == 'income' })}>
@@ -87,7 +130,7 @@ function Statistics() {
             </div>
           </div>
           {/* 这是用于放置饼图的 DOM 节点 */}
-          {/* <div id="proportion"></div> */}
+          <div id="proportion"></div>
         </div>
       </div>
       <PopupDate ref={dateRef} onSelect={select} mode="month" />

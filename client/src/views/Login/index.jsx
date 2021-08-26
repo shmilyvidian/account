@@ -47,10 +47,12 @@ const Login = () => {
             if(type == 'register'){
                 setType('login')
                 Toast.show('注册成功');
+                return
             }else{
                 localStorage.setItem('token', data.token);
                 Toast.show('登录成功');
                 location.push('/')
+                return 
             }
           }catch(e) {
               console.log(e,'e')
