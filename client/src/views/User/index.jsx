@@ -15,7 +15,6 @@ const User = () => {
   const getUserInfo = async () => {
     const { data } = await get('/api/user/getUserInfo');
     setUser(data);
-    setAvatar(data.avatar)
   };
   const logout = async () => {
     localStorage.removeItem('token');
@@ -37,8 +36,6 @@ const User = () => {
         hasArrow
         title="用户信息修改"
         onClick={() => {
-          Toast.show('开发中...')
-          return 
           history.push('/userinfo')
         }}
         icon={<img style={{ width: 20, verticalAlign: '-7px' }} src="http://s.yezgea02.com/1615974766264/gxqm.png" alt="" />}
@@ -47,8 +44,6 @@ const User = () => {
         hasArrow
         title="重制密码"
         onClick={() => {
-          Toast.show('开发中...')
-          return 
           history.push('/account')
         }}
         icon={<img style={{ width: 20, verticalAlign: '-7px' }} src="http://s.yezgea02.com/1615974766264/zhaq.png" alt="" />}

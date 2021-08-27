@@ -14,6 +14,7 @@ module.exports = app => {
   router.post('/api/user/register', controller.user.register);
   router.get('/api/user/getUserInfo', _jwt, controller.user.getUserInfo);
   router.post('/api/user/editUserInfo', _jwt, controller.user.editUserInfo);
+  router.post('/api/user/modifyPass', _jwt, controller.user.modifyPass);
   router.post('/api/upload', controller.upload.upload);
   router.post('/api/bill/add', _jwt, controller.bill.add); // 添加账单
   router.get('/api/bill/list', _jwt, controller.bill.list); // 获取账单列表

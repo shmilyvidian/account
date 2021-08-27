@@ -31,7 +31,7 @@ class UploadController extends Controller {
     ctx.body = {
       code: 200,
       msg: '上传成功',
-      data: uploadDir.replace(/app/g, ''),
+      data: 'http://localhost:7002' + uploadDir.replace(/app/g, ''),
     };
   }
 }

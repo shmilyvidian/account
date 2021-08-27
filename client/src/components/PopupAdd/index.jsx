@@ -22,8 +22,8 @@ const PopupAdd = forwardRef(({ detail = {}, reload }, ref) => {
     const [income, setIncome] = useState([])
 
     const dateRef = useRef()
-    useEffect(()=>{
-        if(id){
+    useEffect(() => {
+        if (id) {
             setAmount(detail.amount)
             changeType(detail.pay_type === 1 ? 'expense' : 'income');
             setCurrentType({
@@ -44,7 +44,7 @@ const PopupAdd = forwardRef(({ detail = {}, reload }, ref) => {
         if (!id) {
             setCurrentType(_expense[0]);
         };
-        
+
     }, []);
     if (ref) {
         ref.current = {
@@ -67,7 +67,7 @@ const PopupAdd = forwardRef(({ detail = {}, reload }, ref) => {
         dateRef.current && dateRef.current.show()
     };
     const handleMoney = (value) => {
-        console.log(value,'value');
+        console.log(value, 'value');
         value = String(value)
         // 点击是删除按钮时
         if (value === 'delete') {
@@ -75,18 +75,18 @@ const PopupAdd = forwardRef(({ detail = {}, reload }, ref) => {
             setAmount(_amount)
             return false
         }
-          // 点击确认按钮时
-    if (value == 'ok') {
-        addBill()
-        return
-      }
+        // 点击确认按钮时
+        if (value == 'ok') {
+            addBill()
+            return
+        }
 
-      // 当输入的值为 '.' 且 已经存在 '.'，则不让其继续字符串相加。
-      if (value == '.' && amount.includes('.')) return
-      // 小数点后保留两位，当超过两位时，不让其字符串继续相加。
-      if (value != '.' && amount.includes('.') && amount && amount.split('.')[1].length >= 2) return
-      // amount += value
-      setAmount(amount + value)
+        // 当输入的值为 '.' 且 已经存在 '.'，则不让其继续字符串相加。
+        if (value == '.' && amount.includes('.')) return
+        // 小数点后保留两位，当超过两位时，不让其字符串继续相加。
+        if (value != '.' && amount.includes('.') && amount && amount.split('.')[1].length >= 2) return
+        // amount += value
+        setAmount(amount + value)
     }
     // 选择账单类型
     const choseType = (item) => {
@@ -94,23 +94,23 @@ const PopupAdd = forwardRef(({ detail = {}, reload }, ref) => {
     }
     const addBill = async () => {
         let params = {
-            amount: Number(amount).toFixed(2), 
-            type_id: currentType.id, 
-            type_name: currentType.name, 
+            amount: Number(amount).toFixed(2),
+            type_id: currentType.id,
+            type_name: currentType.name,
             date: dayjs(date).unix() * 1000,
-            pay_type: payType === 'expense' ? 1 : 2, 
-            remark 
+            pay_type: payType === 'expense' ? 1 : 2,
+            remark
         }
         const url = id ? "/api/bill/update" : "/api/bill/add"
-        params = id ? {...params, id} : params
+        params = id ? { ...params, id } : params
         const res = await post(url, params)
         setAmount('');
         changeType('expense');
         setCurrentType(expense[0]);
         setDate(new Date());
         setRemark('');
-        Toast.show(`${id ? '编辑' :'添加'}成功`);
-        if(reload){
+        Toast.show(`${id ? '编辑' : '添加'}成功`);
+        if (reload) {
             reload()
         }
         setShow(false)

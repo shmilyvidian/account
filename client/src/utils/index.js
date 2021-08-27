@@ -71,3 +71,11 @@ export const typeMap = {
     failure: 4, // 加载失败
     complete: 5, // 加载完成（无新数据）
   };
+  export const imgUrlTrans = (url) => {
+    if (url && url.startsWith('http')) {
+      return url
+    } else {
+      url = `${MODE == 'development' ? 'http://localhost:7002' : baseUrl}${url}`
+      return url
+    }
+  }

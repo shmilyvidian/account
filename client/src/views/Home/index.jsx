@@ -110,6 +110,9 @@ const Home = () => {
         </div>
         <div className={s.contentWrap}>
             {
+                list.length
+            }
+            {
                 list.length ? <Pull
                     animationDuration={200}
                     stayTime={400}
@@ -135,7 +138,8 @@ const Home = () => {
                 <div className={s.empty}>
                   <img 
                     src="http://s.yezgea02.com/1619144597039/empty.png"
-                    srcSet="http://s.yezgea02.com/1619144597039/empty.png" alt="" srcset="" />
+                    srcSet="http://s.yezgea02.com/1619144597039/empty.png" alt="" 
+                    />
                   暂无数据
                 </div>
               )

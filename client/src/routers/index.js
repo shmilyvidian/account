@@ -4,6 +4,8 @@ import User from '@/views/User'
 import Login from '@/views/Login'
 import About from '@/views/About'
 import Detail from '@/views/Detail'
+import UserInfo from '@/views/UserInfo'
+import Account from '@/views/Account'
 
 const routes = [
   {
@@ -29,6 +31,14 @@ const routes = [
   {
     path: "/detail",
     component: Detail
+  },
+  {
+    path: "/userinfo",
+    component: UserInfo
+  },
+  {
+    path: "/account",
+    component: Account
   }
 ];
 
